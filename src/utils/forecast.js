@@ -6,6 +6,7 @@ const forecast = (latitude, longitude, callback) => {
     latitude +
     ',' +
     longitude;
+  // Request the weatherstack api
   // Destructure body attribute from response
   request({ url, json: true }, (error, { body }) => {
     if (error) {

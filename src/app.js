@@ -21,6 +21,9 @@ hbs.registerPartials(partialPath);
 app.use(express.static(publicDirectoryPath));
 
 app.get('', (req, res) => {
+  // Use res.render to render the template (templates are in /templates/views)
+  // First argument is template name
+  // Second argument is an object that contains all variables the template should know when rendering
   res.render('index', {
     title: 'Weather',
     name: 'Xueqi Guan',
@@ -43,12 +46,14 @@ app.get('/help', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
+  // Get address from url
   if (!req.query.address) {
     return res.send({
       error: 'You must provide an address',
     });
   }
 
+  // Get latitude, longitutde, location from geocode, use object destructuring
   geocode(
     req.query.address,
     (error, { latitude, longitutde, location } = {}) => {
@@ -56,6 +61,7 @@ app.get('/weather', (req, res) => {
         return res.send({ error: error });
       }
 
+      // Use latitude, longitutde to get weather forecast
       forecast(latitude, longitutde, (error, forecastData) => {
         if (error) {
           return res.send({ error: error });
